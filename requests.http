@@ -12,7 +12,7 @@ POST http://localhost:8080/recipe
 Content-Type: application/json
 
 {
-  "recipeName": "Test5",
+  "recipeName": "Test1",
   "cookingTime": 60,
   "ingredients": [
     {
@@ -29,7 +29,7 @@ Content-Type: application/json
 ###
 GET  http://localhost:8080/recipe/
 ###
-PUT http://localhost:8080/recipe/0
+PUT http://localhost:8080/recipe/7
 Content-Type: application/json
 
 {
@@ -48,6 +48,12 @@ Content-Type: application/json
   ]
 }
 ###
-DELETE  http://localhost:8080/recipe/5
+DELETE  http://localhost:8080/recipe/1
 ###
 http://localhost:8080/swagger-ui.html
+###
+GET  http://localhost:8080/ingredient
+###
+GET  http://localhost:8080/ingredient/2
+###
+DELETE  http://localhost:8080/ingredient/3

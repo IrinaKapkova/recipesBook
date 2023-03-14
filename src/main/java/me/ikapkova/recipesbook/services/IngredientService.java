@@ -1,6 +1,7 @@
 package me.ikapkova.recipesbook.services;
 
 import me.ikapkova.recipesbook.dto.IngredientDTO;
+import me.ikapkova.recipesbook.exceptions.IngredientNoFounException;
 import me.ikapkova.recipesbook.exceptions.RecipeNoFounException;
 import me.ikapkova.recipesbook.model.Ingredient;
 import org.springframework.stereotype.Service;
@@ -56,4 +57,15 @@ public class IngredientService {
 
     public void addIngredient(String name, int count, String measureUnit) {
     }
+
+
+    public IngredientDTO updateIngredient(int id, Ingredient ingredient) {
+        Ingredient existingIngredient = ingredients.get(id);
+        if (existingIngredient == null) {
+            throw new IngredientNoFounException();
+        }
+    ingredients.put(id, ingredient);
+    return IngredientDTO.from(id, ingredient);
+    }
+
 }

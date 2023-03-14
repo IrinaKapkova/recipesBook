@@ -19,6 +19,7 @@ public class Ingredient {
     @Positive
     private Integer count;
     private String MeasureUnit;
+
 }
 
 
