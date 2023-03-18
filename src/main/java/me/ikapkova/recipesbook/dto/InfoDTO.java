@@ -11,4 +11,5 @@ public class InfoDTO {
     private final LocalDate creationDate;
 
     private final String description;
+
 }

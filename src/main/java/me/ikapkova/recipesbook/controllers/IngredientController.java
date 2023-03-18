@@ -20,12 +20,36 @@ public class IngredientController {
     public IngredientController(IngredientService ingredientService) {
         this.ingredientService = ingredientService;
     }
+    @Operation(
+            summary = "выводит информацию о всех ингредиентах"
+    )
 
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "информация об ингредиентах  успешно сформирована"
+                    ),
+
+            }
+    )
     @GetMapping
     public List<IngredientDTO> getIngredients() {
         return ingredientService.getAllIngredients();
     }
+    @Operation(
+            summary = "выводит информацию об ингредиенте по его id"
+    )
 
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "информация об ингредиенте  успешно сформирована"
+                    ),
+
+            }
+    )
     @GetMapping("/{id}")
     public IngredientDTO getIngredients(@PathVariable("id") int id) {
         return ingredientService.getIngredient(id);
@@ -43,7 +67,8 @@ public class IngredientController {
         ingredientService.addIngredient(name, count, measureUnit);
         return "Был добавлен ингридиент:" + name + " " + count + " " + measureUnit;
     }
-    @Operation(summary = "Изменение ингредиента")
+    @Operation(summary = "Изменение ингредиента",
+            description = "Редактирование по id(целочисленное число) ингредиента")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
