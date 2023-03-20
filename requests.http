@@ -1,0 +1,59 @@
+GET http://localhost:8080
+
+###
+GET http://localhost:8080/info
+
+###
+GET http://localhost:8080/info/datainput?name=Ira&project=RecipeWebsite
+###
+GET http://localhost:8080/recipe/0
+###
+POST http://localhost:8080/recipe
+Content-Type: application/json
+
+{
+  "recipeName": "Test1",
+  "cookingTime": 60,
+  "ingredients": [
+    {
+      "name": "Test2",
+      "count": 30,
+      "measureUnit": "шт"
+    }
+  ],
+  "stepsOfCooking": [
+    "s1",
+    "s2"
+  ]
+}
+###
+GET  http://localhost:8080/recipe/
+###
+PUT http://localhost:8080/recipe/7
+Content-Type: application/json
+
+{
+  "recipeName": "Test12",
+  "cookingTime": 50,
+  "ingredients": [
+    {
+      "name": "Test2",
+      "count": 30,
+      "measureUnit": "шт"
+    }
+  ],
+  "stepsOfCooking": [
+    "s1",
+    "s2"
+  ]
+}
+###
+DELETE  http://localhost:8080/recipe/1
+###
+http://localhost:8080/swagger-ui.html
+###
+GET  http://localhost:8080/ingredient
+###
+GET  http://localhost:8080/ingredient/2
+###
+DELETE  http://localhost:8080/ingredient/3
