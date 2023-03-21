@@ -37,8 +37,10 @@ public class IngredientController {
     public List<IngredientDTO> getIngredients() {
         return ingredientService.getAllIngredients();
     }
+
     @Operation(
-            summary = "выводит информацию об ингредиенте по его id"
+            summary = "выводит информацию об ингредиенте",
+            description = "Можно получить информацию по id"
     )
 
     @ApiResponses(
@@ -63,9 +65,8 @@ public class IngredientController {
             )
     })
     @PostMapping()
-    public String addIngredients(@RequestParam String name, @RequestParam int count, @RequestParam String measureUnit) {
-        ingredientService.addIngredient(name, count, measureUnit);
-        return "Был добавлен ингридиент:" + name + " " + count + " " + measureUnit;
+      public IngredientDTO addIngredient(@RequestBody Ingredient ingredient){
+        return ingredientService.addIngredient(ingredient);
     }
     @Operation(summary = "Изменение ингредиента",
             description = "Редактирование по id(целочисленное число) ингредиента")

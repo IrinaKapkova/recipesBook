@@ -1,5 +1,6 @@
 package me.ikapkova.recipesbook.services;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import me.ikapkova.recipesbook.dto.IngredientDTO;
 import me.ikapkova.recipesbook.dto.RecipeDTO;
 import me.ikapkova.recipesbook.exceptions.RecipeNoFounException;
@@ -8,6 +9,8 @@ import me.ikapkova.recipesbook.model.Ingredient;
 import me.ikapkova.recipesbook.model.Recipe;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -15,11 +18,19 @@ import java.util.stream.Collectors;
 public class RecipeService {
     private int idCounter = 0;
     private final IngredientService  ingredientService;
-    private final Map<Integer, Recipe> recipes = new HashMap<>();
+    private final Map<Integer, Recipe> recipes;
+    private final FileService fileService;
 
-    public RecipeService(IngredientService ingrediantService) {
+    private final  static String STORE_FILE_NAME = "recipes";
+
+    public RecipeService(IngredientService ingrediantService, FileService fileService) {
         this.ingredientService = ingrediantService;
-    }
+        this.fileService = fileService;
+        Map<Integer,Recipe> storeMap = fileService.readFromFile(STORE_FILE_NAME, new TypeReference<>() {});
+        this.recipes = Objects.requireNonNullElseGet(storeMap, HashMap::new);
+       }
+//    @PostConstruct
+//    public  void  setup(){}
 
     public RecipeDTO addRecipe(Recipe recipe) {
         if(StringUtils.isBlank(recipe.getRecipeName())){
@@ -30,6 +41,7 @@ public class RecipeService {
         for (Ingredient ingredient : recipe.getIngredients()) {
             this.ingredientService.addIngredient(ingredient);
         }
+        this.fileService.saveToFile(STORE_FILE_NAME, this.recipes);
         return RecipeDTO.from(id, recipe);
     }
 
@@ -55,6 +67,7 @@ public class RecipeService {
             throw new RecipeNoFounException();
         }
         recipes.put(id, recipe);
+        this.fileService.saveToFile(STORE_FILE_NAME, this.recipes);
         return RecipeDTO.from(id, recipe);
     }
 
@@ -63,6 +76,7 @@ public class RecipeService {
         if (existingRecipe == null) {
             throw new RecipeNoFounException();
         }
+        this.fileService.saveToFile(STORE_FILE_NAME, this.recipes);
         return RecipeDTO.from(id, existingRecipe);
     }
 
