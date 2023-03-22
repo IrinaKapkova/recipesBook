@@ -5,6 +5,7 @@ import me.ikapkova.recipesbook.dto.IngredientDTO;
 import me.ikapkova.recipesbook.exceptions.IngredientNoFounException;
 import me.ikapkova.recipesbook.exceptions.RecipeNoFounException;
 import me.ikapkova.recipesbook.model.Ingredient;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.Map.Entry;
@@ -14,7 +15,7 @@ public class IngredientService {
     private static int idCounter = 0;
     private final FileService fileService;
 
-    private final Map<Integer, Ingredient> ingredients;
+    private Map<Integer, Ingredient> ingredients;
 
     public IngredientService(FileService fileService) {
         this.fileService = fileService;
@@ -73,6 +74,12 @@ public class IngredientService {
         }
     ingredients.put(id, ingredient);
     return IngredientDTO.from(id, ingredient);
+    }
+//
+    public  void importIngrediens (Resource resource){
+        fileService.saveRecource(STORE_FILE_NAME, resource);
+        this.ingredients = fileService.readFromFile(STORE_FILE_NAME, new TypeReference<>() {
+        });
     }
 
 }
