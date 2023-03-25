@@ -12,11 +12,11 @@ POST http://localhost:8080/recipe
 Content-Type: application/json
 
 {
-  "recipeName": "Test1",
+  "recipeName": "Test2",
   "cookingTime": 60,
   "ingredients": [
     {
-      "name": "Test2",
+      "name": "Test1",
       "count": 30,
       "measureUnit": "шт"
     }
@@ -57,3 +57,24 @@ GET  http://localhost:8080/ingredient
 GET  http://localhost:8080/ingredient/2
 ###
 DELETE  http://localhost:8080/ingredient/3
+###
+GET  http://localhost:8080/files/export/recipes
+###
+POST http://localhost:8080/files/import/recipes
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="file.json"
+Content-Type: application/json
+
+< ./recipes.json
+
+###
+POST http://localhost:8080/files/import/ingredients
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="file.json"
+Content-Type: application/json
+
+< ./ingredients.json
