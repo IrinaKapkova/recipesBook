@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import me.ikapkova.recipesbook.services.IngredientService;
 import me.ikapkova.recipesbook.services.RecipeService;
 import org.springframework.core.io.Resource;
-import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,20 +24,12 @@ public class ImportExportController {
         this.ingredientService = ingredientService;
     }
 
-
     @GetMapping("/files/export/recipes")
     @Operation(summary = "Скачивание файла рецептов в JSON формате.")
     @ApiResponse(responseCode = "200", description = "Файл экспортирован.")
     public ResponseEntity<Resource> downloadRecipes() throws IOException {
         Resource recipes = recipeService.getRecipesFiles();
-        ContentDisposition disposition = ContentDisposition.attachment()
-                .name("recipes.json")
-                .build();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentDisposition(disposition);
         return ResponseEntity.ok()
-                .headers(headers)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"recipes.json\"")
                 .contentLength(recipes.contentLength())
                 .contentType(MediaType.TEXT_PLAIN)
