@@ -40,7 +40,7 @@ public class ImportExportController {
     @ApiResponse(responseCode = "200", description = "Файл загружен.")
     public ResponseEntity<?> importRecipes(@RequestParam MultipartFile file) {
         this.recipeService.importRecipes(file.getResource());
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping(value = "/files/import/ingredients", consumes = MULTIPART_FORM_DATA_VALUE)
