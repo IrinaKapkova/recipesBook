@@ -78,3 +78,5 @@ Content-Disposition: form-data; name="file"; filename="file.json"
 Content-Type: application/json
 
 < ./ingredients.json
+###
+GET http://localhost:8080/files/export/recipes_txt

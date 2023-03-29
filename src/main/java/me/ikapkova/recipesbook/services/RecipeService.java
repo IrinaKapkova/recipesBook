@@ -10,10 +10,15 @@ import me.ikapkova.recipesbook.model.Recipe;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Service
 public class RecipeService {
@@ -82,6 +87,7 @@ public class RecipeService {
     public Resource getRecipesFiles() {
         return fileService.getRecource(STORE_FILE_NAME);
     }
+
     public  void importRecipes (Resource resource){
        fileService.saveRecource(STORE_FILE_NAME, resource);
        this.recipes = fileService.readFromFile(STORE_FILE_NAME, new TypeReference<>() {
@@ -116,4 +122,8 @@ public class RecipeService {
                 .map(e -> RecipeDTO.from(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
+    public Resource getRecipesFilesTxt () {
+        return fileService.getRecourceTxt(STORE_FILE_NAME);
+    }
+
 }

@@ -1,17 +1,20 @@
 package me.ikapkova.recipesbook.services;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
-
+import java.io.IOException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
+import java.nio.file.StandardCopyOption;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
-import java.nio.file.StandardCopyOption;
-
-
+import java.util.Map;
+import java.io.FileNotFoundException;
+import me.ikapkova.recipesbook.model.Recipe;
+import org.springframework.core.io.InputStreamResource;
 @Service
 public class FileService {
     private final Path filesDir;
@@ -62,5 +65,9 @@ public class FileService {
             e.printStackTrace();
         }
     }
-
+//
+    public Resource getRecourceTxt(String fileName) {
+        Path filePath = filesDir.resolve(fileName+".txt");
+        return new FileSystemResource(filePath);
+    }
 }

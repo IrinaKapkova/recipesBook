@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-
+@ToString
 public class Ingredient {
 
     @NotBlank(message = "наименование ингредиента не может быть null и должен содержать хотя бы один непробельный символ")

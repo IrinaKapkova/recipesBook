@@ -36,7 +36,7 @@ public class ImportExportController {
                 .body(recipes);
     }
     @PutMapping(value = "/files/import/recipes", consumes = MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "Импорт рецептов.", description = "Импорт файла рецептов в .json формате.")
+    @Operation(summary = "Импорт рецептов.", description = "Импорт файла рецептов в .json формате")
     @ApiResponse(responseCode = "200", description = "Файл загружен.")
     public ResponseEntity<?> importRecipes(@RequestParam MultipartFile file) {
         this.recipeService.importRecipes(file.getResource());
@@ -49,5 +49,17 @@ public class ImportExportController {
     public ResponseEntity<?> importIngredients(@RequestParam MultipartFile file) {
         this.ingredientService.importIngrediens(file.getResource());
         return ResponseEntity.ok().build();
+    }
+//
+    @GetMapping("/files/export/recipes_txt")
+    @Operation(summary = "Скачивание файла рецептов в txt формате.")
+    @ApiResponse(responseCode = "200", description = "Файл экспортирован.")
+    public ResponseEntity<Resource> downloadRecipesTxt() throws IOException {
+        Resource recipes = recipeService.getRecipesFiles();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"recipes.txt\"")
+                .contentLength(recipes.contentLength())
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(recipes);
     }
 }
