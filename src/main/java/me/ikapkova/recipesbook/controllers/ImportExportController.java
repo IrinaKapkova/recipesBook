@@ -74,5 +74,4 @@ public class ImportExportController {
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         recipeService.exportTxtFile(response.getWriter());
     }
-
 }

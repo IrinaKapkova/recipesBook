@@ -10,6 +10,7 @@ import me.ikapkova.recipesbook.model.Recipe;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.Map;
@@ -118,8 +119,9 @@ public class RecipeService {
                 .map(e -> RecipeDTO.from(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
-    public void exportTxtFile (PrintWriter writer){
-        for (Recipe recipe : this.recipes.values()){
+
+    public void exportTxtFile(PrintWriter writer) {
+        for (Recipe recipe : this.recipes.values()) {
             writer.append(" Название рецепта: ");
             writer.println(recipe.getRecipeName());
             writer.append("\n Время приготовления: ");
@@ -127,12 +129,12 @@ public class RecipeService {
             writer.append(" минут.");
             writer.println("");
             writer.println("\n Ингредиенты: ");
-            for (Ingredient ingredient : recipe.getIngredients()){
+            for (Ingredient ingredient : recipe.getIngredients()) {
                 writer.println("\t%s - %d  %s".formatted(ingredient.getName(), ingredient.getCount(), ingredient.getMeasureUnit()));
             }
             writer.println("\n Шаги приготовления: ");
-            for (int i=0; i< recipe.getStepsOfCooking().size(); i++){
-                writer.println("%d  %s".formatted(i+1,recipe.getStepsOfCooking().get(i)));
+            for (int i = 0; i < recipe.getStepsOfCooking().size(); i++) {
+                writer.println("%d  %s".formatted(i + 1, recipe.getStepsOfCooking().get(i)));
             }
             writer.println("");
             writer.println("");

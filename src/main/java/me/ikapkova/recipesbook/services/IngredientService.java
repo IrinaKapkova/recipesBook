@@ -7,8 +7,10 @@ import me.ikapkova.recipesbook.exceptions.RecipeNoFounException;
 import me.ikapkova.recipesbook.model.Ingredient;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+
 import java.util.*;
 import java.util.Map.Entry;
+
 @Service
 public class IngredientService {
     private static final String STORE_FILE_NAME = "ingredients";
@@ -19,7 +21,8 @@ public class IngredientService {
 
     public IngredientService(FileService fileService) {
         this.fileService = fileService;
-        Map<Integer, Ingredient> storeMap = fileService.readFromFile(STORE_FILE_NAME, new TypeReference<>() {});
+        Map<Integer, Ingredient> storeMap = fileService.readFromFile(STORE_FILE_NAME, new TypeReference<>() {
+        });
         this.ingredients = Objects.requireNonNullElseGet(storeMap, HashMap::new);
     }
 
@@ -72,11 +75,11 @@ public class IngredientService {
         if (existingIngredient == null) {
             throw new IngredientNoFounException();
         }
-    ingredients.put(id, ingredient);
-    return IngredientDTO.from(id, ingredient);
+        ingredients.put(id, ingredient);
+        return IngredientDTO.from(id, ingredient);
     }
 
-    public  void importIngrediens (Resource resource){
+    public void importIngrediens(Resource resource) {
         fileService.saveRecource(STORE_FILE_NAME, resource);
         this.ingredients = fileService.readFromFile(STORE_FILE_NAME, new TypeReference<>() {
         });
