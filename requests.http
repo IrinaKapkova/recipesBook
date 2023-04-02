@@ -12,18 +12,25 @@ POST http://localhost:8080/recipe
 Content-Type: application/json
 
 {
-  "recipeName": "Test2",
-  "cookingTime": 60,
+  "recipeName": "Салат",
+  "cookingTime": 30,
   "ingredients": [
     {
-      "name": "Test1",
-      "count": 30,
+      "name": "томат",
+      "count": 2,
+      "measureUnit": "шт"
+    },
+    {
+      "name": "огурец",
+      "count": 2,
       "measureUnit": "шт"
     }
   ],
   "stepsOfCooking": [
-    "s1",
-    "s2"
+    "порезать",
+    "посолить",
+    "заправить маслом",
+    "смешать"
   ]
 }
 ###
@@ -78,3 +85,6 @@ Content-Disposition: form-data; name="file"; filename="file.json"
 Content-Type: application/json
 
 < ./ingredients.json
+###
+GET http://localhost:8080/files/export/recipes_format
+

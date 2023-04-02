@@ -11,28 +11,30 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.Map;
+import java.io.*;
 
 @Service
 public class RecipeService {
     private int idCounter = 0;
-    private final IngredientService  ingredientService;
+    private final IngredientService ingredientService;
     private Map<Integer, Recipe> recipes;
     private final FileService fileService;
 
-    private final  static String STORE_FILE_NAME = "recipes";
+    private final static String STORE_FILE_NAME = "recipes";
 
     public RecipeService(IngredientService ingrediantService, FileService fileService) {
         this.ingredientService = ingrediantService;
         this.fileService = fileService;
-        Map<Integer,Recipe> storeMap = fileService.readFromFile(STORE_FILE_NAME, new TypeReference<>() {});
+        Map<Integer, Recipe> storeMap = fileService.readFromFile(STORE_FILE_NAME, new TypeReference<>() {
+        });
         this.recipes = Objects.requireNonNullElseGet(storeMap, HashMap::new);
-       }
+    }
 
     public RecipeDTO addRecipe(Recipe recipe) {
-        if(StringUtils.isBlank(recipe.getRecipeName())){
+        if (StringUtils.isBlank(recipe.getRecipeName())) {
             throw new RecipeValidationException();
         }
         int id = idCounter++;
@@ -82,10 +84,11 @@ public class RecipeService {
     public Resource getRecipesFiles() {
         return fileService.getRecource(STORE_FILE_NAME);
     }
-    public  void importRecipes (Resource resource){
-       fileService.saveRecource(STORE_FILE_NAME, resource);
-       this.recipes = fileService.readFromFile(STORE_FILE_NAME, new TypeReference<>() {
-       });
+
+    public void importRecipes(Resource resource) {
+        fileService.saveRecource(STORE_FILE_NAME, resource);
+        this.recipes = fileService.readFromFile(STORE_FILE_NAME, new TypeReference<>() {
+        });
     }
 
     public List<RecipeDTO> getRecipesByIngredientId(int ingredientId) {
@@ -115,5 +118,27 @@ public class RecipeService {
                 })
                 .map(e -> RecipeDTO.from(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
+    }
+
+    public void exportTxtFile(PrintWriter writer) {
+        for (Recipe recipe : this.recipes.values()) {
+            writer.append(" Название рецепта: ");
+            writer.println(recipe.getRecipeName());
+            writer.append("\n Время приготовления: ");
+            writer.print(recipe.getCookingTime());
+            writer.append(" минут.");
+            writer.println("");
+            writer.println("\n Ингредиенты: ");
+            for (Ingredient ingredient : recipe.getIngredients()) {
+                writer.println("\t%s - %d  %s".formatted(ingredient.getName(), ingredient.getCount(), ingredient.getMeasureUnit()));
+            }
+            writer.println("\n Шаги приготовления: ");
+            for (int i = 0; i < recipe.getStepsOfCooking().size(); i++) {
+                writer.println("%d  %s".formatted(i + 1, recipe.getStepsOfCooking().get(i)));
+            }
+            writer.println("");
+            writer.println("");
+        }
+        writer.flush();
     }
 }

@@ -21,4 +21,19 @@ public class Recipe {
     private List <Ingredient> ingredients;
     @NotEmpty (message = "Инструкция по приготовлению не должна быть null или пустой")
     private List<String> stepsOfCooking;
+    @Override
+    public String toString() {
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(recipeName).append("\n");
+        buffer.append("Время приготовления: " + cookingTime + " мин.").append("\n");
+        buffer.append("Ингредиенты: ").append("\n");
+        for (Ingredient ingredient : ingredients) {
+            buffer.append("\t").append(ingredient).append("\n");
+        }
+        buffer.append("Инструкция приготовления: ").append("\n");
+        for (int i = 0; i < stepsOfCooking.size(); i++) {
+            buffer.append(i + 1).append(". ").append(stepsOfCooking.get(i)).append("\n");
+        }
+        return buffer.toString();
+    }
 }
